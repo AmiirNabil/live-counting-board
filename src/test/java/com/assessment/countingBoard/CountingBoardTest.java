@@ -11,7 +11,7 @@ public class CountingBoardTest {
 
     @BeforeEach
     void setUp() {
-        countingBoard = new CountingBoardDefault(new MatchValidatorImpl());
+        countingBoard = new CountingBoardDefault();
     }
 
     @Test
