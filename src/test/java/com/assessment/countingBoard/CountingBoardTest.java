@@ -11,7 +11,7 @@ public class CountingBoardTest {
 
     @BeforeEach
     void setUp() {
-        countingBoard = new CountingBoardDefault();
+        countingBoard = new CountingBoardDefault(new MatchValidatorImpl());
     }
 
     @Test
@@ -36,20 +36,16 @@ public class CountingBoardTest {
 
     @Test
     void testUpdateMatchThatDoesNotExist() {
-        CountingBoardDefault countingBoard = new CountingBoardDefault();
-
         // Attempt to update a match that hasn't been started yet
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             countingBoard.updateMatchScore("ClassA", "ClassB", 1, 0);  // No such match exists
         });
 
-        assertEquals("Match between ClassA and ClassB not found.", exception.getMessage());
+        assertEquals("Match not found.", exception.getMessage());
     }
 
     @Test
     void testUpdateFinishedMatch() {
-        CountingBoardDefault countingBoard = new CountingBoardDefault();
-
         // Start a match
         countingBoard.startMatch("ClassA", "ClassB");
         countingBoard.updateMatchScore("ClassA", "ClassB", 1, 0);  // Update the score
@@ -62,7 +58,7 @@ public class CountingBoardTest {
             countingBoard.updateMatchScore("ClassA", "ClassB", 2, 1);  // Match has been finished, cannot update
         });
 
-        assertEquals("Cannot update the score for a finished match.", exception.getMessage());
+        assertEquals("Cannot process operation for a finished match.", exception.getMessage());
     }
 
     @Test
